@@ -1,72 +1,25 @@
 import streamlit as st
 from PIL import Image
-import numpy as np
 import tensorflow as tf
-
-# Apply a custom theme for the app
-st.markdown(
-    """
-    <style>
-        body {
-            background-color: black;
-            color: white;
-        }
-        h1, h3, p {
-            color: #FF0000; /* Red theme */
-            text-align: center;
-        }
-        #MainMenu {visibility: hidden;}
-        footer {visibility: hidden;}
-        footer:after {
-            content: 'This app is in its early stage. We recommend consulting a professional for accurate diagnosis.';
-            visibility: visible;
-            display: block;
-            position: relative;
-            color: white;
-            background-color: #FF0000;
-            text-align: center;
-            padding: 10px;
-            margin-top: 10px;
-        }
-        .stButton button {
-            background-color: #FF0000;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .stButton button:hover {
-            background-color: #A00000;
-        }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
+import numpy as np
 
 # Load the pre-trained model
 model = tf.keras.models.load_model('densenet121-20-p4.h5')
 
-# Define labels for categories
-labels = {
-    0: 'Benign',
-    1: 'Malignant'
-}
-
-# Function to preprocess the image
+# Preprocess image function (to ensure 150x150 input size)
 def preprocess_image(image):
-    image = image.resize((224, 224))  # Resize to 224x224
+    image = image.convert("RGB")  # Ensure the image is in RGB format
+    image = image.resize((150, 150))  # Resize to the correct input size for DenseNet121
     image_array = np.expand_dims(np.array(image), axis=0)  # Convert and expand dimensions
     return image_array
 
-# Function to make predictions
+# Predict function
 def predict(image):
     processed_image = preprocess_image(image)
     prediction = model.predict(processed_image)
-    label_index = np.argmax(prediction)
-    predicted_label = labels[label_index]
-    confidence = prediction[0][label_index] * 100
+    label_index = (prediction > 0.5).astype(int)  # Convert prediction to binary (0 or 1)
+    predicted_label = 'Melanoma' if label_index == 1 else 'No Melanoma'
+    confidence = prediction[0][0] * 100  # Get the confidence
     return predicted_label, confidence
 
 # Streamlit app
@@ -75,8 +28,7 @@ def main():
     st.markdown("<h3>Upload an image of a skin lesion for classification</h3>", unsafe_allow_html=True)
 
     # Image upload options
-    source = st.radio('Image Source', ['Upload from Gallery', 'Capture using Camera'])
-    uploaded_file = st.camera_input("Capture Image") if source == 'Capture using Camera' else st.file_uploader("Upload Image", type=["jpg", "png", "jpeg", "bmp"])
+    uploaded_file = st.file_uploader("Upload Image", type=["jpg", "png", "jpeg", "bmp"])
 
     if uploaded_file is not None:
         image = Image.open(uploaded_file)
