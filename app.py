@@ -60,7 +60,7 @@ def predict(image):
     processed_image = preprocess_image(image)
     prediction = model.predict(processed_image)
     label_index = (prediction > 0.5).astype(int)[0][0]  # Convert prediction to binary (0 or 1)
-    predicted_label = 'Melanoma' if label_index == 1 else 'No Melanoma'
+    predicted_label = 'Melanoma' if label_index == 1 else 'Benign'
     confidence = prediction[0][0] * 100 if label_index == 1 else (1 - prediction[0][0]) * 100
     return predicted_label, confidence
 
