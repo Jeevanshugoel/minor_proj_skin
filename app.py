@@ -8,11 +8,11 @@ st.markdown(
     """
     <style>
         body {
-            background-color: white;
+            background-color: black;
             color: white;
         }
         h1, h3, p {
-            color: darkblue; /* Orange-Red theme */
+            color: #FF4500; /* Orange-Red theme */
             text-align: center;
         }
         #MainMenu {visibility: hidden;}
