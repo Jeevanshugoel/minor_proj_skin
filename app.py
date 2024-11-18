@@ -46,7 +46,7 @@ st.markdown(
 )
 
 # Load the pre-trained model
-model = tf.keras.models.load_model('densenet121-20-p4.h5')
+model = tf.keras.models.load_model('mobileNet.h5')
 
 # Preprocess image function
 def preprocess_image(image):
