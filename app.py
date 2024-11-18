@@ -46,7 +46,7 @@ st.markdown(
 )
 
 # Load the pre-trained model
-model = tf.keras.models.load_model('denseNet121.h5')
+model = tf.keras.models.load_model('DenseNet121_.h5')
 
 # Preprocess image function
 def preprocess_image(image):
