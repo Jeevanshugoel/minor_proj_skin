@@ -66,7 +66,7 @@ def predict(image):
 
 # Streamlit app
 def main():
-    st.markdown("<h1>Skin Cancer Detection App</h1>", unsafe_allow_html=True)
+    st.markdown("<h1>Skin Cancer Detection Apdsasdfsdfsffp</h1>", unsafe_allow_html=True)
     st.markdown("<h3>Upload an image of a skin lesion for classification</h3>", unsafe_allow_html=True)
 
     # Image upload section
