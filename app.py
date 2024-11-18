@@ -51,7 +51,7 @@ model = tf.keras.models.load_model('mobileNet.h5')
 # Preprocess image function
 def preprocess_image(image):
     image = image.convert("RGB")  # Ensure the image is in RGB format
-    image = image.resize((150, 150))  # Resize to 150x150 (input size for the model)
+    image = image.resize((224, 224))  # Resize to 150x150 (input size for the model)
     image_array = np.expand_dims(np.array(image) / 255.0, axis=0)  # Normalize and add batch dimension
     return image_array
 
